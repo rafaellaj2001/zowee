@@ -9,7 +9,7 @@ def upload_script(file_path):
     Upload het script naar de mainframe met behulp van Zowe CLI.
     """
     try:
-        # Het pad waar het bestand geüpload moet worden op de mainframe
+        # Het pad waar het bestand geï¿½pload moet worden op de mainframe
         mainframe_path = "/path/to/mainframe/directory"  # Pas dit aan naar je eigen directory op de mainframe
         result = subprocess.run(
             ['zowe', 'files', 'upload', '--file', file_path, '--directory', mainframe_path],

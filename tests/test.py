@@ -1,6 +1,34 @@
 import subprocess
 import os
 import logging
+import json
+
+
+# Stel logniveau omgevingsvariabelen in voor Zowe CLI
+os.environ["ZOWE_IMPERATIVE_LOG_LEVEL"] = "debug"  # Kies 'debug', 'info', 'warn', of 'error'
+os.environ["ZOWE_APP_LOG_LEVEL"] = "info"  # Kies 'debug', 'info', 'warn', of 'error'
+
+# Laad de Zowe-configuratie uit het opgegeven bestand
+config_file_path = 'C:\\Users\\rafae\\source\\repos\\Mainframe\\zowe\\zowe.config.json'
+
+with open(config_file_path, 'r') as config_file:
+    config_data = json.load(config_file)
+
+# Haal het profiel op (bijvoorbeeld 'my-profile')
+profile = config_data['zosmf']['my-profile']
+
+# Verkrijg de vereiste gegevens
+host = profile['host']
+port = profile['port']
+user = profile['user']
+password = profile['password']
+
+# Print de verkregen configuratie
+print(f"Host: {host}")
+print(f"Port: {port}")
+print(f"User: {user}")
+print(f"Password: {password}")
+
 
 # Configureer logging
 logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(levelname)s - %(message)s')
@@ -43,11 +71,6 @@ def set_zowe_environment_variables(host, port, user, password):
 
 # Hoofdlogica van het script
 def main():
-    # Stel je Zowe-server instellingen in
-    host = "192.168.1.26"  # Vervang door je z/OSMF-server IP
-    port = 8081            # Vervang door je poortnummer
-    user = "rafa"          # Vervang door je z/OSMF gebruikersnaam
-    password = "jouw-wachtwoord"  # Vervang door je z/OSMF wachtwoord
 
     set_zowe_environment_variables(host, port, user, password)
 
@@ -70,7 +93,10 @@ def main():
         remote_file = input("Voer de naam in van de remote dataset op de mainframe: ").strip()
         local_file = input("Voer het pad in naar waar je het bestand wilt opslaan: ").strip()
 
-        download_file(remote_file, local_file)
+        if remote_file and local_file:
+            download_file(remote_file, local_file)
+        else:
+            logging.error("Zorg ervoor dat zowel de remote dataset als het lokale bestandspad geldig zijn.")
     
     else:
         logging.error("Ongeldige keuze. Voer 'u' in om te uploaden of 'd' om te downloaden.")

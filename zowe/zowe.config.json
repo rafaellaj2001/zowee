@@ -1,15 +1,10 @@
 {
-    "zowe": {
-        "cli": {
-            "profiles": {
-                "zosmf": {
-                    "host": "localhost",
-                    "port": 8081,
-                    "user": "rafa",
-                    "password": "rafa",
-                    "secure": false
-                }
-            }
+    "zosmf": {
+        "my-profile": {
+            "host": "192.168.1.26",
+            "port": 8081,
+            "user": "rafa",
+            "password": "rafa"
         }
     }
 }

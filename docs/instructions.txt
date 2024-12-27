@@ -1,0 +1,61 @@
+Instructions for the Script Sharing Platform via Zowe CLI
+
+1. Prerequisites
+   - Zowe CLI: Make sure you have Zowe CLI installed on your system. You can find installation instructions on the official Zowe website.
+   - Configuration: Ensure that your Zowe CLI is properly configured with access to the mainframe environment. This requires the correct hostname and user credentials in the Zowe configuration file.
+
+2. Installing Zowe CLI
+   - If you haven't installed Zowe CLI yet, you can do so by running the following command:
+     ```
+     npm install -g @zowe/cli
+     ```
+   - After installation, configure your environment by running the following command:
+     ```
+     zowe profiles create zosmf-profile --host <host> --user <username> --password <password>
+     ```
+     Replace `<host>`, `<username>`, and `<password>` with your actual environment values.
+
+3. Using the Platform
+   The platform is designed to upload, validate, and automatically check scripts before they are uploaded to the mainframe.
+
+   a. File Type Check and Validation
+      The platform first validates whether the file is the correct type (no images, Word documents, or PowerPoint files). It also checks for correct indentation.
+
+   b. Example command to upload a script:
+      ```
+      zowe zos-files upload file "path/to/script.sh" "MDSDS"
+      ```
+      This will upload the file to the specified location on the mainframe.
+
+4. Troubleshooting
+   If you receive an error message, check the following:
+   - Ensure that your Zowe CLI is correctly configured.
+   - Check that the file type of your script is correct and does not contain unwanted file types.
+   - Verify the indentation of your script. The platform will automatically validate indentation.
+
+   In case of an unknown error, you can view the Zowe CLI logs for more details:
+5. Example Commands
+- Upload a script:
+  ```
+  zowe zos-files upload file "path/to/script.sh" "MDSDS"
+  ```
+- View logs:
+  ```
+  zowe zosmf view logs
+  ```
+
+6. What Users Can Expect
+- After successful validation, the script will be uploaded to the mainframe.
+- If there is an issue with the script, you will receive an error message with details about what went wrong.
+
+7. Frequently Asked Questions (FAQ)
+**Question**: What happens if my script is not formatted correctly?
+**Answer**: The platform will automatically check the indentation and give an error if the indentation is incorrect.
+
+**Question**: How can I test my script without uploading it to the mainframe?
+**Answer**: You can locally test the script by validating it through the CLI before uploading. The platform performs automatic validation.
+
+8. Extra Functionality
+We encourage you to add extra functionality such as integration with RACF, Docker, Ansible, and other tools that could enhance your project. This can help you earn additional points.
+
+Good luck using the platform! If you have any questions, please contact the developer.

@@ -1,0 +1,8 @@
+{
+  "dependencies": {
+    "@zowe/cics-for-zowe-cli": "^6.0.0",
+    "@zowe/db2-for-zowe-cli": "^6.0.0",
+    "@zowe/mq-for-zowe-cli": "^4.0.0",
+    "@zowe/zos-ftp-for-zowe-cli": "^3.0.0"
+  }
+}

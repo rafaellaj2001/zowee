@@ -68,9 +68,8 @@ def start_gui():
                         return
 
                     try:
-                        # Hier zou je het dataset_name moeten verkrijgen, bijv. via een invoer van de gebruiker
-                        dataset_name = "MAINFRAME.DATASET"  # Vervang dit met de juiste logica
-                        success, upload_message = upload_script(file_path, dataset_name)
+                        # Probeer het bestand te uploaden
+                        success, upload_message = upload_script(file_path)
                         messagebox.showinfo("Upload Resultaat", upload_message)
                     except Exception as e:
                         messagebox.showerror("Upload Fout", f"Er is een fout opgetreden tijdens het uploaden: {e}")
@@ -78,10 +77,9 @@ def start_gui():
                     messagebox.showerror("Validatie Mislukt", message)
             else:
                 messagebox.showwarning("Geen Bestand Gekozen", "Je hebt geen bestand geselecteerd.")
-    
+                
         # Start de upload in een aparte thread
         threading.Thread(target=upload_in_background, daemon=True).start()
-
 
 
     # Functie om lokale scripts te tonen

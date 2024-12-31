@@ -35,8 +35,12 @@ Ik vul het hostadres, poortnummer, gebruikersnaam en wachtwoord in om de verbind
 
 ## 3. Script Downloaden
 Ik klik op de knop **"Download Script"** om een script van de mainframe naar mijn lokale machine te downloaden.  
-Ik voer de naam van het script in dat ik wil downloaden.  
-Vervolgens kies ik een locatie op mijn lokale machine om het bestand op te slaan.  
+Een nieuw venster wordt geopend met een lijst van beschikbare scripts die op de mainframe staan.  
+Ik selecteer het script dat ik wil downloaden door erop te klikken in de lijst.  
+Nadat ik een script heb geselecteerd, kies ik een locatie op mijn lokale machine om het bestand op te slaan.  
+Als ik op **"Opslaan"** klik, wordt het geselecteerde script gedownload naar de gekozen locatie.  
+
+Na een succesvol download ontvang ik een bevestigingsmelding.
 
 
 ## 4. Script Uploaden

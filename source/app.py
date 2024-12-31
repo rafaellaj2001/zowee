@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 import tkinter as tk
 from tkinter import filedialog, messagebox, simpledialog
 import subprocess
@@ -33,47 +32,66 @@ def set_zowe_environment_variables(host, port, user, password):
     os.environ["ZOWE_ZOSMF_PASSWORD"] = password
     os.environ["ZOWE_CLI_CONFIG_DIR"] = os.path.expanduser("~/.zowe")
 
-# Functie om te controleren of het bestand (script) bestaat op de mainframe
-def check_script_exists(script_name):
-    """Controleer of het script bestaat op de mainframe via Zowe CLI."""
-    command = f"zowe zos-files data-set list \"{script_name}\""
+# Functie om scripts op te halen van de mainframe
+def get_scripts_list():
+    """Verkrijg een lijst van beschikbare scripts op de mainframe via Zowe CLI."""
+    command = "zowe zos-files data-set list"
     result = run_zowe_command(command)
-    if result and "No data sets found" not in result:
-        return True
-    return False
-
-# Functie om bestand te downloaden van de mainframe
-def download_file():
-    # Vraag om de scriptnaam
-    script_name = simpledialog.askstring("Scriptnaam", "Voer de naam van het script in dat je wilt downloaden:")
     
-    if script_name:
-        # Controleer of het script bestaat op de mainframe
-        if check_script_exists(script_name):
-            # Vraag de gebruiker om een locatie om het bestand op te slaan
-            local_file = filedialog.asksaveasfilename(
-                title="Kies locatie om het bestand op te slaan", 
-                defaultextension=".txt", 
-                filetypes=[("Text bestanden", "*.txt")]
-            )
-            
-            if local_file:
-                # Stel het Zowe-commando in om het bestand te downloaden
-                command = f"zowe zos-files download \"{script_name}\" \"{local_file}\""
-                run_zowe_command(command)
-                
-                # Toon een succesmelding
-                messagebox.showinfo("Success", f"Script succesvol gedownload naar {local_file}")
-            else:
-                # Foutmelding als geen locatie is geselecteerd
-                messagebox.showerror("Fout", "Geen bestandslocatie geselecteerd.")
-        else:
-            # Foutmelding als het script niet bestaat
-            messagebox.showerror("Fout", f"Het script {script_name} bestaat niet op de mainframe.")
-    else:
-        # Foutmelding als de scriptnaam leeg is
-        messagebox.showerror("Fout", "De scriptnaam is ongeldig.")
+    if result:
+        # Parseer de lijst van datasets
+        scripts = []
+        for line in result.splitlines():
+            # Je kunt de logica aanpassen om de datasetnaam te extraheren
+            if "DSN=" in line:
+                scripts.append(line.split("DSN=")[-1].strip())
+        return scripts
+    return []
 
+# Functie om een script te downloaden
+def download_file():
+    # Verkrijg een lijst van scripts van de mainframe
+    scripts = get_scripts_list()
+    
+    if scripts:
+        # Maak een nieuw venster voor de lijst van scripts
+        download_window = tk.Toplevel(root)
+        download_window.title("Kies Script om te Downloaden")
+        download_window.geometry("400x300")
+        
+        # Voeg een lijstbox toe
+        listbox = tk.Listbox(download_window, height=10, width=50)
+        for script in scripts:
+            listbox.insert(tk.END, script)
+        
+        listbox.pack(pady=20)
+        
+        def on_select_script():
+            # Verkrijg het geselecteerde script
+            selected_script = listbox.get(tk.ACTIVE)
+            if selected_script:
+                # Vraag de gebruiker om een locatie om het bestand op te slaan
+                local_file = filedialog.asksaveasfilename(
+                    title="Kies locatie om het bestand op te slaan", 
+                    defaultextension=".txt", 
+                    filetypes=[("Text bestanden", "*.txt")]
+                )
+                
+                if local_file:
+                    # Stel het Zowe-commando in om het bestand te downloaden
+                    command = f"zowe zos-files download \"{selected_script}\" \"{local_file}\""
+                    run_zowe_command(command)
+                    messagebox.showinfo("Success", f"Script succesvol gedownload naar {local_file}")
+                else:
+                    messagebox.showerror("Fout", "Geen locatie geselecteerd.")
+            download_window.destroy()
+        
+        # Voeg een knop toe om het geselecteerde script te downloaden
+        select_button = tk.Button(download_window, text="Download Geselecteerd Script", command=on_select_script)
+        select_button.pack(pady=10)
+        
+    else:
+        messagebox.showerror("Fout", "Er zijn geen scripts gevonden op de mainframe.")
 
 # Functie om bestand te uploaden naar de mainframe
 def upload_file():
@@ -91,7 +109,7 @@ def upload_file():
                 result = run_zowe_command(command)
                 
                 if result:
-                    messagebox.showinfo("Success", f"Bestand succesvol ge pload naar {remote_dataset}")
+                    messagebox.showinfo("Success", f"Bestand succesvol gepload naar {remote_dataset}")
                 else:
                     messagebox.showerror("Fout", "Er is een fout opgetreden bij het uploaden van het bestand.")
             else:

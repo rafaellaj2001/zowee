@@ -1,123 +1,132 @@
-Instructions for the Script Sharing Platform via Zowe CLI
+Instructies voor het Script Sharing Platform via Zowe CLI
+1. Het Instellen van de Mainframe
+Hercules is een open-source mainframe-emulator die een IBM System/370, z/Architecture, of S/390 mainframe nabootst. Dit is een populaire keuze voor educatieve en ontwikkelingsdoeleinden om een z/OS-achtige omgeving te simuleren.
 
-1. Setting up the mainframe
-    Hercules is an open-source mainframe emulator that emulates an IBM System/370, z/Architecture, or S/390 mainframe. This is a popular choice for educational and development purposes to simulate z/OS-like systems.
+Volg de onderstaande gedetailleerde stappen om Hercules in te stellen en een mainframe-achtige omgeving te emuleren.
 
-    Below are the detailed steps to set up Hercules and emulate a mainframe-like environment.
+1.1 Hercules Emulator Downloaden
+Ga naar de officiële Hercules-website om de laatste versie van de Hercules-emulator voor jouw besturingssysteem te downloaden:
 
-    Steps to Set Up Hercules:
-    1.1 Download Hercules Emulator
-    Go to the official Hercules website:
-    Hercules Emulator Website.
+Windows: Er is een uitvoerbaar bestand beschikbaar dat je kunt downloaden en installeren.
+Linux: Hercules kan worden geïnstalleerd via je pakketbeheerder.
+macOS: Gebruik Homebrew of download een vooraf gecompileerde versie.
+Voor Linux kun je Hercules installeren via de terminal met de volgende commando's, afhankelijk van je distributie:
 
-    Download the latest version of the Hercules emulator for your operating system:
+Ubuntu/Debian:
 
-    Windows: There is a Windows executable that you can download and install.
-    Linux: You can install Hercules using your system's package manager.
-    macOS: Use Homebrew or download a precompiled version.
-    If you're installing Hercules for Linux, you can use the terminal with the following commands (depending on your distribution):
+sudo apt install hercules
 
-    For Ubuntu/Debian:
+Fedora:
 
-    sudo apt install hercules
-    
-    For Fedora:
+sudo dnf install hercules
 
-    sudo dnf install hercules
-    For macOS (via Homebrew):
+macOS (via Homebrew):
 
-    brew install hercules
+brew install hercules
 
-    1.2 Install Hercules
-    Follow the installation instructions for your operating system:
+1.2 Hercules Installeren
+Volg de installatie-instructies voor jouw besturingssysteem:
 
-    Windows: Double-click the downloaded .exe installer and follow the steps to install Hercules on your machine.
-    Linux/macOS: Installation via package manager or Homebrew should automatically configure everything for you.
-    
-    1.3 Download a z/OS Image
-    Hercules does not provide z/OS images because they are licensed, but there are a few options:
+Windows: Dubbelklik op de gedownloade .exe installer en volg de stappen om Hercules te installeren.
+Linux/macOS: Als je Hercules via een pakketbeheerder of Homebrew installeert, wordt alles automatisch voor je geconfigureerd.
 
-    IBM MVS Image: Look for an MVS or z/OS-like image suitable for educational use. Please note, you may need a valid license to run z/OS.
+1.3 Een z/OS Image Downloaden
+Hercules biedt geen z/OS-images omdat deze gelicenseerd zijn, maar er zijn enkele opties beschikbaar:
 
-    Educational z/OS Images: Some z/OS-like images are available for personal and educational purposes. These images are often shared by educational institutions or community groups. Be sure to download from a trusted source and ensure you're not violating any licensing agreements.
+IBM MVS Image: Zoek naar een MVS- of z/OS-achtige image die geschikt is voor educatief gebruik. Let op: je hebt mogelijk een geldige licentie nodig om z/OS uit te voeren.
+Educatieve z/OS Images: Sommige z/OS-achtige images zijn beschikbaar voor persoonlijk en educatief gebruik. Deze worden vaak gedeeld door onderwijsinstellingen of gemeenschappen. Zorg ervoor dat je downloadt van een vertrouwde bron en dat je geen licentieovereenkomsten schendt.
+Voor educatieve images kun je onder andere de volgende websites raadplegen:
 
-    Example websites for educational images may include:
-    Hercules Community Forums
-    VM/370 images
-    Make sure to download the correct image that is compatible with your system (e.g., an MVS 3.8j image or other compatible versions).
+Hercules Community Forums
+VM/370 Images
+Zorg ervoor dat je de juiste image downloadt die compatibel is met je systeem (bijv. een MVS 3.8j image of een andere geschikte versie).
 
-    1.4 Configure Hercules
-    After downloading the required z/OS image, you need to configure Hercules.
+1.4 Hercules Configureren
+Na het downloaden van de benodigde z/OS-image, moet je Hercules configureren.
 
-    Create a configuration file (hercules.cnf):
-    This file defines the hardware configuration for your virtual mainframe, including memory, disk, network settings, and CPU.
+Maak een configuratiebestand (hercules.cnf): Dit bestand definieert de hardwareconfiguratie voor je virtuele mainframe, inclusief geheugen, schijven, netwerkinstellingen en CPU.
 
-    Example hercules.cnf configuration file: Here’s a simple example of a configuration file (hercules.cnf) for Hercules:
-
-    cpu 0 model 3090
-    mem 4096
-    dasd 0 /path/to/your/diskfile
-    con 0 3270
-    tcp 0 127.0.0.1 3270
-    cpu 0 model 3090: Specifies the CPU model (in this case, an IBM 3090).
-    mem 4096: Sets memory to 4GB.
-    dasd 0: Connects a virtual hard drive (/path/to/your/diskfile).
-    con 0 3270: Specifies a 3270 terminal for interaction.
-    tcp 0 127.0.0.1 3270: Connects the simulator to a TCP port for terminal communication.
-    Specific settings may vary, depending on the image you are using and your system requirements. Please refer to the Hercules documentation for detailed configuration options.
-
-    1.5 Start the Hercules Emulator
-    After configuring your system, you can start the Hercules emulator by running the following command:
-
-    hercules -f hercules.cnf
-
-    -f hercules.cnf tells Hercules to load the configuration file and apply the settings.
-    Hercules will now attempt to start the virtual mainframe based on the settings in the configuration file.
-
-    1.6 Access the System
-    Once Hercules has started, you can access the virtual z/OS system via a 3270 terminal emulator.
-
-    Use a 3270 terminal emulator like:
-
-    x3270 (for Linux/macOS)
-    IBM Personal Communications (for Windows)
-    These programs provide a terminal interface for mainframe systems, similar to the old IBM terminals.
-
-    Connect via Telnet:
-
-    Set your terminal emulator to connect to 127.0.0.1 (localhost) on port 3270:
-    Host: 127.0.0.1
-    Port: 3270
-    Log in to the system: After connecting, you should be able to log in to the virtual z/OS system using the appropriate username and password. These credentials are often provided with the z/OS image you downloaded or can be found in the image's configuration settings.
+Voorbeeld van een eenvoudig configuratiebestand (hercules.cnf):
 
 
-2. Installing Zowe CLI
-   - If you haven't installed Zowe CLI yet, you can do so by running the following command:
-     ```
-     npm install -g @zowe/cli
-     ```
-   - After installation, configure your environment by running the following command:
-     ```
-     zowe profiles create zosmf-profile --host <host> --user <username> --password <password>
-     ```
-     Replace `<host>`, `<username>`, and `<password>` with your actual environment values.
+cpu 0 model 3090
+mem 4096
+dasd 0 /path/to/your/diskfile
+con 0 3270
+tcp 0 127.0.0.1 3270
+Uitleg van de configuratieregels:
 
-3. Using the Platform
-   The platform is designed to upload, validate, and automatically check scripts before they are uploaded to the mainframe.
+cpu 0 model 3090: Specificeert het CPU-model (in dit geval een IBM 3090).
+mem 4096: Stelt het geheugen in op 4 GB.
+dasd 0: Verbindt een virtuele harde schijf (vervang /path/to/your/diskfile door het pad naar jouw schijfbestand).
+con 0 3270: Specificeert een 3270-terminal voor interactie.
+tcp 0 127.0.0.1 3270: Verbindt de simulator via TCP op poort 3270 voor terminalcommunicatie.
+Specifieke instellingen kunnen variëren, afhankelijk van de image die je gebruikt en de systeemvereisten. Raadpleeg de Hercules-documentatie voor gedetailleerde configuratieopties.
 
-   a. File Type Check and Validation
-      The platform first validates whether the file is the correct type (no images, Word documents, or PowerPoint files). It also checks for correct indentation.
+1.5 Hercules Emulator Starten
+Na het configureren van je systeem kun je de Hercules-emulator starten met het volgende commando:
 
-   b. Example command to upload a script:
-      ```
-      zowe zos-files upload file "path/to/script.sh" "MDSDS"
-      ```
-      This will upload the file to the specified location on the mainframe.
 
-4. Troubleshooting
-   If you receive an error message, check the following:
-   - Ensure that your Zowe CLI is correctly configured.
-   - Check that the file type of your script is correct and does not contain unwanted file types.
-   - Verify the indentation of your script. The platform will automatically validate indentation.
+hercules -f hercules.cnf
+Het commando -f hercules.cnf vertelt Hercules om het configuratiebestand te laden en de instellingen toe te passen. Hercules probeert nu de virtuele mainframe te starten op basis van de instellingen in het configuratiebestand.
 
-   In case of an unknown error, you can view the Zowe CLI logs for more details:
+1.6 Toegang Krijgen tot het Systeem
+Zodra Hercules is gestart, kun je toegang krijgen tot het virtuele z/OS-systeem via een 3270-terminalemulator.
+
+Gebruik een van de volgende programma’s:
+
+x3270 (voor Linux/macOS)
+IBM Personal Communications (voor Windows)
+Verbind via Telnet:
+
+Host: 127.0.0.1
+Poort: 3270
+Na het verbinden kun je inloggen op het systeem met de juiste gebruikersnaam en wachtwoord. Deze gegevens worden vaak meegeleverd met de gedownloade z/OS-image of kunnen worden gevonden in de configuratie-instellingen van de image.
+
+2. Zowe CLI Installeren
+Als je Zowe CLI nog niet hebt geïnstalleerd, kun je dit doen door het volgende commando uit te voeren:
+
+
+npm install -g @zowe/cli
+Na de installatie moet je je omgeving configureren door het volgende commando uit te voeren:
+
+
+zowe profiles create zosmf-profile --host <host> --user <username> --password <password>
+Vervang <host>, <username>, en <password> door de werkelijke waarden van je omgeving.
+
+Zowe CLI Profielen
+Het zowe profiles create commando maakt een profiel aan voor Zowe CLI. Dit profiel slaat de host, gebruikersnaam en wachtwoord op die Zowe CLI nodig heeft om verbinding te maken met je mainframe-systeem. Je kunt later profielen beheren met de volgende commando's:
+
+Lijst van profielen: zowe profiles list
+Verwijder profiel: zowe profiles delete <profile_name>
+
+3. Het Platform Gebruiken
+Het platform is ontworpen om scripts te uploaden, te valideren en automatisch te controleren voordat ze naar de mainframe worden geüpload.
+
+3.1 Bestandscontrole en Validatie
+Het platform valideert of het bestand het juiste type heeft (geen afbeeldingen, Word-documenten of PowerPoint-bestanden) en controleert of de inspringing correct is.
+
+3.2 Voorbeeld van een Commando voor het Uploaden van een Script
+Gebruik het onderstaande commando om een script te uploaden naar een dataset op de mainframe:
+
+
+zowe zos-files upload file "path/to/script.sh" "MDSDS"
+In dit voorbeeld wordt het bestand script.sh geüpload naar de dataset MDSDS op de mainframe.
+
+Opmerking: Vervang MDSDS door de naam van de dataset waar je het bestand naartoe wilt uploaden.
+
+4. Probleemoplossing
+Als je een foutmelding ontvangt, controleer dan het volgende:
+
+4.1 Zowe CLI Configuratie
+Zorg ervoor dat je Zowe CLI correct is geconfigureerd met de juiste host, gebruikersnaam en wachtwoord.
+
+4.2 Bestandsformaat
+Controleer of het bestand het juiste formaat heeft. Het platform accepteert geen afbeeldingen, Word-documenten of PowerPoint-bestanden.
+Controleer de indeling van je script. Het platform valideert de indeling van de code om te zorgen dat het correct is.
+
+4.3 Verbinding met de Mainframe
+Als je een foutmelding krijgt zoals "Connection refused", controleer dan of de poortinstellingen correct zijn en of de Hercules-emulator goed is geconfigureerd om verbindingen te accepteren.
+
+4.4 Zowe CLI Logs Bekijken
+Bij onbekende fouten kun je de Zowe CLI logs raadplegen voor meer details over de fout. Dit kan je helpen om te achterhalen waar het probleem zich bevindt.

@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import os
 
 def validate_script(file_path):
